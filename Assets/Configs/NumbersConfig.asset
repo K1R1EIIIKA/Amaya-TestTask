@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84b3dabda1a34ff385ecddc91a132903, type: 3}
+  m_Name: NumbersConfig
+  m_EditorClassIdentifier: 
+  cells:
+  - letter: 26
+    sprite: {fileID: -1070218366, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: 0
+  - letter: 27
+    sprite: {fileID: 2058372553, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: 0
+  - letter: 28
+    sprite: {fileID: 1042834058, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: 0
+  - letter: 29
+    sprite: {fileID: -1928188367, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: 0
+  - letter: 30
+    sprite: {fileID: -799018878, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: 0
+  - letter: 31
+    sprite: {fileID: 1506023721, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: 0
+  - letter: 32
+    sprite: {fileID: -97854703, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: -90
+  - letter: 33
+    sprite: {fileID: -1789123309, guid: fe25375e992b7364eb2b1954c20939f8, type: 3}
+    rotation: -90
+  - letter: 34
+    sprite: {fileID: 542404619, guid: a1f859b9deaa78141bae5f75c0bf2272, type: 3}
+    rotation: 0
+  - letter: 35
+    sprite: {fileID: 612448980, guid: 5fd38eadc9ab0be4db2ca82ed63412d4, type: 3}
+    rotation: 0
