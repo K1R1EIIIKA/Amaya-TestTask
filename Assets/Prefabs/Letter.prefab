@@ -217,6 +217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CellLetter: 0
   _spriteRenderer: {fileID: 419358976393468106}
+  LetterObject: {fileID: 465795934341204188}
 --- !u!61 &7475157608669547202
 BoxCollider2D:
   m_ObjectHideFlags: 0

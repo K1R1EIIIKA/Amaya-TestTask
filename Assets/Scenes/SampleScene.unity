@@ -430,6 +430,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelTask: {fileID: 1155059335}
+  _shakeDuration: 0.5
+  _particlePrefab: {fileID: 3809450591945404879, guid: 8750a7bd970baf24db8f0974049d2091, type: 3}
+  _winTime: 2
 --- !u!1 &1155059333
 GameObject:
   m_ObjectHideFlags: 0

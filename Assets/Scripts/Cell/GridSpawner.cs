@@ -15,6 +15,7 @@ public class GridSpawner : MonoBehaviour
     [SerializeField] private Transform gridContainer;
     
     private Cell[,] cells;
+    private bool _isFirstGrid = true;
 
     public Cell[,] CreateGrid(Vector2Int gridSize, List<CellCharacteristic> _characteristics)
     {
@@ -37,6 +38,8 @@ public class GridSpawner : MonoBehaviour
             }
         }
         
+        // _isFirstGrid = false;
+        
         return cells;
     }
 
@@ -49,8 +52,6 @@ public class GridSpawner : MonoBehaviour
             if (cell != null)
                 Destroy(cell.gameObject);
         }
-            
-        // _characteristics = configs.SelectMany(config => config.Cells).ToList();
     }
 
     private void SpawnCell(List<CellCharacteristic> _characteristics, int x, int y, float xPos, float yPos)
@@ -58,7 +59,10 @@ public class GridSpawner : MonoBehaviour
         Cell cell = Instantiate(cellPrefab, new Vector3(xPos + spacing.x * xPos, yPos + spacing.y * yPos), Quaternion.identity, gridContainer);
 
         cell.transform.name = $"Cell {x} {y}";
-        BounceCell(cell, x, y);
+        
+        if (_isFirstGrid)
+            BounceCell(cell, x, y);
+        
         var randomCell = _characteristics[Random.Range(0, _characteristics.Count)];
         cell.SetLetter(randomCell);
         _characteristics.Remove(randomCell);
@@ -70,6 +74,9 @@ public class GridSpawner : MonoBehaviour
     private void BounceCell(Cell cell, float i, float i1)
     {
         cell.transform.localScale = Vector3.zero;
-        cell.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce).SetDelay(i * 0.1f + i1 * 0.1f);
+        cell.transform.DOScale(Vector3.one, 0.5f)
+            .SetEase(Ease.OutBounce)
+            .SetDelay(i * 0.1f + i1 * 0.1f)
+            .SetLink(cell.gameObject);
     }
 }
