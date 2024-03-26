@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -13,67 +14,74 @@ public class LevelTask : MonoBehaviour
     [SerializeField] private GridSpawner _gridSpawner;
     [SerializeField] private LevelConfig _levelConfig;
     [SerializeField] private CellConfig[] configs;
+    [FormerlySerializedAs("_endGame")] [SerializeField] private EndGameLogic endGameLogic;
 
     private List<CellCharacteristic> _characteristics;
     private List<CellCharacteristic> _completedCharacteristics = new List<CellCharacteristic>();
-    public Letter taskLetter;
-
-    private int _currentLevel = 0;
+    [NonSerialized] public Letter TaskLetter;
+    [NonSerialized] public int CurrentLevel;
 
     private void Start()
     {
         _characteristics = configs.SelectMany(config => config.Cells).ToList();
-        GenerateTask(_levelConfig.GridSizes[_currentLevel]);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
-        {
-            _currentLevel = (_currentLevel + 1) % _levelConfig.GridSizes.Length;
-            _gridSpawner.RemoveGrid();
-            ResetCharacteristics();
-            GenerateTask(_levelConfig.GridSizes[_currentLevel]);
-        }
-
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            _gridSpawner.RemoveGrid();
-            ResetCharacteristics();
-            GenerateTask(_levelConfig.GridSizes[_currentLevel]);
-        }
+        GenerateTask(_levelConfig.GridSizes[CurrentLevel]);
     }
 
     private void ResetCharacteristics()
     {
         _characteristics = configs.SelectMany(config => config.Cells).ToList();
         _characteristics = _characteristics.Except(_completedCharacteristics).ToList();
-        // print(string.Join(", ", _completedCharacteristics.Select(characteristic => characteristic.letter).ToArray()));
+        
         print(string.Join(", ", _characteristics.Select(characteristic => characteristic.letter).ToArray()));
         print(_characteristics.Count + " " + _completedCharacteristics.Count);
     }
 
-    private void GenerateTask(Vector2Int gridSize)
+    public void GenerateTask(Vector2Int gridSize)
     {
         var cells = _gridSpawner.CreateGrid(gridSize, _characteristics);
 
-        taskLetter = cells[Random.Range(0, gridSize.x), Random.Range(0, gridSize.y)].CellLetter;
-
-        string task = "Find " + taskLetter;
+        var randomCell = cells[Random.Range(0, gridSize.x), Random.Range(0, gridSize.y)];
+        TaskLetter = randomCell.CellLetter;
+        string letterString = randomCell.CellName;
+        
+        string task = "Find " + letterString;
         _taskText.text = task;
+        
+        if (!_gridSpawner.IsFirstGrid) return;
+        
+        _taskText.DOFade(0, 0).SetLink(gameObject);
+        _taskText.DOFade(1, 2).SetLink(gameObject);
     }
 
     public void CompleteTask()
     {
-        _currentLevel = (_currentLevel + 1) % _levelConfig.GridSizes.Length;
+        if (endGameLogic.IsEndGame(CurrentLevel))
+        {
+            endGameLogic.EndGame();
+            return;
+        }
+        CurrentLevel = (CurrentLevel + 1) % _levelConfig.GridSizes.Length;
+        
         _gridSpawner.RemoveGrid();
 
         _characteristics = configs.SelectMany(config => config.Cells).ToList();
-//TODO:        all characteristics 
-        _completedCharacteristics.Add(_characteristics.Find(characteristic => characteristic.letter == taskLetter));
+
+        _completedCharacteristics.Add(_characteristics.Find(characteristic => characteristic.letter == TaskLetter));
         ResetCharacteristics();
         print(_characteristics.Count);
 
-        GenerateTask(_levelConfig.GridSizes[_currentLevel]);
+        GenerateTask(_levelConfig.GridSizes[CurrentLevel]);
+    }
+    
+    public void ResetTask()
+    {
+        CurrentLevel = 0;
+        _gridSpawner.RemoveGrid();
+        
+        _completedCharacteristics.Clear();
+        ResetCharacteristics();
+        _gridSpawner.IsFirstGrid = true;
+        
+        GenerateTask(_levelConfig.GridSizes[CurrentLevel]);
     }
 }

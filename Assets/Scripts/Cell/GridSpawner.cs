@@ -15,7 +15,8 @@ public class GridSpawner : MonoBehaviour
     [SerializeField] private Transform gridContainer;
     
     private Cell[,] cells;
-    private bool _isFirstGrid = true;
+    
+    [NonSerialized] public bool IsFirstGrid = true;
 
     public Cell[,] CreateGrid(Vector2Int gridSize, List<CellCharacteristic> _characteristics)
     {
@@ -38,7 +39,7 @@ public class GridSpawner : MonoBehaviour
             }
         }
         
-        // _isFirstGrid = false;
+        IsFirstGrid = false;
         
         return cells;
     }
@@ -60,7 +61,7 @@ public class GridSpawner : MonoBehaviour
 
         cell.transform.name = $"Cell {x} {y}";
         
-        if (_isFirstGrid)
+        if (IsFirstGrid)
             BounceCell(cell, x, y);
         
         var randomCell = _characteristics[Random.Range(0, _characteristics.Count)];

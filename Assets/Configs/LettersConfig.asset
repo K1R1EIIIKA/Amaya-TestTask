@@ -14,80 +14,106 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cells:
   - letter: 0
+    letterName: A
     sprite: {fileID: -303450147, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 1
+    letterName: B
     sprite: {fileID: -906741964, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 2
+    letterName: C
     sprite: {fileID: 1855835339, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 3
+    letterName: D
     sprite: {fileID: 332216569, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 4
+    letterName: E
     sprite: {fileID: 1222991787, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 5
+    letterName: F
     sprite: {fileID: 188544217, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 6
+    letterName: G
     sprite: {fileID: -1511133407, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 7
+    letterName: H
     sprite: {fileID: 765676065, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 8
+    letterName: I
     sprite: {fileID: -1221537905, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 9
+    letterName: J
     sprite: {fileID: -497708355, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 10
+    letterName: K
     sprite: {fileID: -80170802, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 11
+    letterName: L
     sprite: {fileID: -2122283803, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 12
+    letterName: M
     sprite: {fileID: 305913320, guid: 24451f0a684202e489c23d4c3aabea34, type: 3}
     rotation: 0
   - letter: 13
+    letterName: N
     sprite: {fileID: -742260532, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 14
+    letterName: O
     sprite: {fileID: 1879105584, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 15
+    letterName: P
     sprite: {fileID: 1246284558, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 16
+    letterName: Q
     sprite: {fileID: -1356451746, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 17
+    letterName: R
     sprite: {fileID: 302236954, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 18
+    letterName: S
     sprite: {fileID: -217338041, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 19
+    letterName: T
     sprite: {fileID: 92277754, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 20
+    letterName: U
     sprite: {fileID: 1643672401, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 21
+    letterName: V
     sprite: {fileID: -46696677, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 22
+    letterName: W
     sprite: {fileID: -1675509519, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 23
+    letterName: X
     sprite: {fileID: -1282101703, guid: d903100a921cd94479a83d3e50ae4ed7, type: 3}
     rotation: 0
   - letter: 24
+    letterName: Y
     sprite: {fileID: 1197980659, guid: dc4ff93857be16e4cbbb21ae84fa46ab, type: 3}
     rotation: 0
   - letter: 25
+    letterName: Z
     sprite: {fileID: -36538660, guid: dc4ff93857be16e4cbbb21ae84fa46ab, type: 3}
     rotation: 0

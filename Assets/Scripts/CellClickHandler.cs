@@ -13,6 +13,7 @@ public class CellClickHandler : MonoBehaviour
     [SerializeField] private float _winTime = 2f;
 
     private Camera _camera;
+    private bool _canClick = true;
 
     private void Awake()
     {
@@ -21,7 +22,7 @@ public class CellClickHandler : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && _canClick)
         {
             var hit = Physics2D.Raycast(_camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
@@ -30,7 +31,7 @@ public class CellClickHandler : MonoBehaviour
                 var cell = hit.collider.GetComponent<Cell>();
                 if (cell != null)
                 {
-                    if (cell.CellLetter == _levelTask.taskLetter)
+                    if (cell.CellLetter == _levelTask.TaskLetter)
                     {
                         // _levelTask.CompleteTask();
                         BounceCell(cell);
@@ -61,7 +62,11 @@ public class CellClickHandler : MonoBehaviour
 
     private IEnumerator WinCoroutine()
     {
+        _canClick = false;
+        
         yield return new WaitForSeconds(_winTime);
+        
+        _canClick = true;
         _levelTask.CompleteTask();
     }
 
@@ -73,7 +78,8 @@ public class CellClickHandler : MonoBehaviour
 
         cell.LetterObject.transform.DOShakePosition(_shakeDuration, new Vector3(0.3f, 0, 0), 10, 0, false, true)
             .SetEase(Ease.InBounce)
-            .OnComplete(() => FinishShake(cell));
+            .OnComplete(() => FinishShake(cell))
+            .SetLink(cell.gameObject);
     }
 
     private void FinishShake(Cell cell)
