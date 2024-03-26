@@ -10,32 +10,13 @@ using Random = UnityEngine.Random;
 public class GridSpawner : MonoBehaviour
 {
     [SerializeField] private Cell cellPrefab;
-    [SerializeField] private Vector2Int gridSize;
     [SerializeField] private Vector2 spacing;
-    [SerializeField] private CellConfig[] configs;
 
     [SerializeField] private Transform gridContainer;
     
-    private List<CellCharacteristic> _characteristics = new();
-    public List<CellCharacteristic> Characteristics => _characteristics;
-    
     private Cell[,] cells;
-    
-    private void Start()
-    {
-        CreateGrid();
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            RemoveGrid();
-            CreateGrid();
-        }
-    }
-
-    public void CreateGrid()
+    public Cell[,] CreateGrid(Vector2Int gridSize, List<CellCharacteristic> _characteristics)
     {
         cells = new Cell[gridSize.x, gridSize.y];
         Vector2 centerPoint = new Vector2(gridSize.x / 2, gridSize.y / 2);
@@ -52,9 +33,11 @@ public class GridSpawner : MonoBehaviour
                 if (_characteristics.Count == 0)
                     break;
 
-                SpawnCell(x, y, x - centerPoint.x, y - centerPoint.y);
+                SpawnCell(_characteristics, x, y, x - centerPoint.x, y - centerPoint.y);
             }
         }
+        
+        return cells;
     }
 
     public void RemoveGrid()
@@ -67,12 +50,13 @@ public class GridSpawner : MonoBehaviour
                 Destroy(cell.gameObject);
         }
             
-        _characteristics = configs.SelectMany(config => config.Cells).ToList();
+        // _characteristics = configs.SelectMany(config => config.Cells).ToList();
     }
 
-    private void SpawnCell(int x, int y, float xPos, float yPos)
+    private void SpawnCell(List<CellCharacteristic> _characteristics, int x, int y, float xPos, float yPos)
     {
         Cell cell = Instantiate(cellPrefab, new Vector3(xPos + spacing.x * xPos, yPos + spacing.y * yPos), Quaternion.identity, gridContainer);
+
         cell.transform.name = $"Cell {x} {y}";
         BounceCell(cell, x, y);
         var randomCell = _characteristics[Random.Range(0, _characteristics.Count)];
@@ -87,15 +71,5 @@ public class GridSpawner : MonoBehaviour
     {
         cell.transform.localScale = Vector3.zero;
         cell.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce).SetDelay(i * 0.1f + i1 * 0.1f);
-    }
-
-    public Cell GetCell(Vector2Int coordinates)
-    {
-        return cells[coordinates.x, coordinates.y];
-    }
-    
-    public Vector2Int GetGridSize()
-    {
-        return gridSize;
     }
 }

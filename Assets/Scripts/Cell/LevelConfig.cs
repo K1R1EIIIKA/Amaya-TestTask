@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "LevelConfig", menuName = "LevelConfig")]
 public class LevelConfig : ScriptableObject
 {
     [SerializeField] private Vector2Int[] _gridSizes;
