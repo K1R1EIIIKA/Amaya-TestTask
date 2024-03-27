@@ -785,7 +785,6 @@ MonoBehaviour:
   _levelConfig: {fileID: 11400000, guid: c43c5e1ebe7d7a2419f26513b36a9179, type: 2}
   _configs:
   - {fileID: 11400000, guid: a0cdfcaf1270fc14dacff4e86881df5b, type: 2}
-  - {fileID: 11400000, guid: a582a7f0ef407224b9ec08e46861d8e4, type: 2}
   _endGameLogic: {fileID: 1070614880}
   _loading: {fileID: 1272692655}
 --- !u!1 &1161788678
@@ -942,6 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _loadingImage: {fileID: 1553656987}
   _fadeDuration: 1
+  _clickHandler: {fileID: 1079458069}
 --- !u!1 &1381209208
 GameObject:
   m_ObjectHideFlags: 0
