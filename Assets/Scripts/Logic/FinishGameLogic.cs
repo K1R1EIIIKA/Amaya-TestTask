@@ -19,7 +19,7 @@ namespace Logic
         public void FinishGame()
         {
             _finishGamePanel.SetActive(true);
-            _elementsAnimator.FadePanel(_finishGameImage, 0.25f, 0.85f);
+            _elementsAnimator.FadeEndPanel(_finishGameImage, 0.25f, 0.85f);
             
             _clickHandler.SetCanClick(false);
         }

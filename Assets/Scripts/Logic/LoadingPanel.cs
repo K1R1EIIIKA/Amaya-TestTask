@@ -28,7 +28,7 @@ namespace Logic
         public void LoadEndPanel()
         {
             gameObject.SetActive(true);
-            _elementsAnimator.FadePanel(_loadingImage, _fadeDuration, 1f);
+            _elementsAnimator.FadeEndPanel(_loadingImage, _fadeDuration, 1f);
         }
 
         private IEnumerator UnloadPanel()

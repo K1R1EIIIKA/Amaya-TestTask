@@ -67,7 +67,7 @@ namespace Logic
             loadingImage.DOFade(1, fadeDuration).OnComplete(task.Invoke);
         }
         
-        public void FadePanel(Image loadingImage, float fadeDuration, float intensity)
+        public void FadeEndPanel(Image loadingImage, float fadeDuration, float intensity)
         {
             loadingImage.DOFade(0, 0);
             loadingImage.DOFade(intensity, fadeDuration);

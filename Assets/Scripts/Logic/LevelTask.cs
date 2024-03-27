@@ -66,7 +66,9 @@ namespace Logic
         {
             _characteristics = ChooseCharacteristics();
             _possibleRandomCharacteristics = _allCharacteristics.Except(_completedCharacteristics).ToList();
-            print("Available characters: " + string.Join(", ", _possibleRandomCharacteristics.Select(characteristic => characteristic.letter)));
+
+            Debug.Log("Available characters: " + 
+                      string.Join(", ", _possibleRandomCharacteristics.Select(characteristic => characteristic.letter)));
         }
 
         private void GenerateTask(Vector2Int gridSize)
@@ -96,8 +98,10 @@ namespace Logic
 
         private CellCharacteristic GetRandomCell(Vector2Int gridSize)
         {
-            CellCharacteristic randCell =
-                _possibleRandomCharacteristics[Random.Range(0, _possibleRandomCharacteristics.Count)];
+            var searchList = _possibleRandomCharacteristics
+                .Where(characteristic => _characteristics.Contains(characteristic)).ToList();
+            
+            CellCharacteristic randCell = searchList[Random.Range(0, searchList.Count)];
 
             _taskLetter = randCell.letter;
 
@@ -127,6 +131,7 @@ namespace Logic
         {
             _completedCharacteristics.Add(
                 _allCharacteristics.Find(characteristic => characteristic.letter == _taskLetter));
+            
             _gridSpawner.IsFirstGrid = true;
             _currentLevel = 0;
 

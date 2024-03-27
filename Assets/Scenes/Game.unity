@@ -993,6 +993,7 @@ MonoBehaviour:
   _taskText: {fileID: 1918316717}
   _configs:
   - {fileID: 11400000, guid: a0cdfcaf1270fc14dacff4e86881df5b, type: 2}
+  - {fileID: 11400000, guid: a582a7f0ef407224b9ec08e46861d8e4, type: 2}
   _gridSpawner: {fileID: 1558517255}
   _levelConfig: {fileID: 11400000, guid: c43c5e1ebe7d7a2419f26513b36a9179, type: 2}
   _loading: {fileID: 1272692655}
@@ -1201,7 +1202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8122257e3c1a4ed9b3205255083ebeab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WinTime: 2
   _clickHandler: {fileID: 1079458069}
   _levelTask: {fileID: 1155059335}
   _endGameLogic: {fileID: 1070614880}

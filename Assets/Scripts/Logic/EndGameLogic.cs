@@ -27,7 +27,7 @@ namespace Logic
         {
             _endGamePanel.SetActive(true);
             _endGameImage.color = new Color(0, 0, 0, 0);
-            _elementsAnimator.FadePanel(_endGameImage, 0.25f, 0.85f);
+            _elementsAnimator.FadeEndPanel(_endGameImage, 0.25f, 0.85f);
             
             _clickHandler.SetCanClick(false);
         }
