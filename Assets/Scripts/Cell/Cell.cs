@@ -5,11 +5,11 @@ public class Cell : MonoBehaviour
 {
     public Letter CellLetter;
     public string CellName;
+    public GameObject LetterObject;
+    
+    [NonSerialized] public bool IsShaking;
     
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    public GameObject LetterObject;
-
-    [NonSerialized] public bool IsShaking;
     
     public void SetLetter(CellCharacteristic cellCharacteristic)
     {

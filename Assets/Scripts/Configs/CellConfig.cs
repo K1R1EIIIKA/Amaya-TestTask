@@ -9,6 +9,4 @@ public class CellConfig : ScriptableObject
     [FormerlySerializedAs("cells")] [SerializeField]
     private CellCharacteristic[] _cells;
     public IEnumerable<CellCharacteristic> Cells => _cells;
-
-    public int LetterCount => Cells.Count();
 }
