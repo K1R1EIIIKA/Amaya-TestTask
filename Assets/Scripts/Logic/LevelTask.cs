@@ -15,23 +15,31 @@ namespace Logic
     {
         [NonSerialized] public Letter TaskLetter;
         [NonSerialized] public int CurrentLevel;
-    
+        
+        [Header("Properties")]
         [SerializeField] private TextMeshProUGUI _taskText;
+        [SerializeField] private CellConfig[] _configs;
+        
+        [Header("Dependencies")]
         [SerializeField] private GridSpawner _gridSpawner;
         [SerializeField] private LevelConfig _levelConfig;
-        [SerializeField] private CellConfig[] _configs;
-        [SerializeField] private EndGameLogic _endGameLogic;
         [SerializeField] private LoadingPanel _loading;
+        [SerializeField] ElementsAnimator _elementsAnimator;
+        [SerializeField] EndGameLogic _endGameLogic;
 
-        private List<CellCharacteristic> _characteristics;
-        private List<CellCharacteristic> _completedCharacteristics = new();
-        private readonly UnityEvent _onLoadComplete = new UnityEvent();
         private List<CellCharacteristic> _allCharacteristics = new();
+        private List<CellCharacteristic> _possibleRandomCharacteristics = new();
+        private readonly List<CellCharacteristic> _completedCharacteristics = new();
+        private List<CellCharacteristic> _characteristics;
+        
+        private readonly UnityEvent _onLoadComplete = new();
+        
 
         private void Start()
         {
-            _characteristics = ChooseCharacteristics();
             _allCharacteristics = _configs.SelectMany(config => config.Cells).ToList();
+            ResetCharacteristics();
+            
             GenerateTask(_levelConfig.GridSizes[CurrentLevel]);
         
             _onLoadComplete.AddListener(() => _gridSpawner.RemoveGrid());
@@ -41,48 +49,45 @@ namespace Logic
         private void ResetCharacteristics()
         {
             _characteristics = ChooseCharacteristics();
-            print(string.Join(", ", _completedCharacteristics.Select(characteristic => characteristic.letter)));
-            _characteristics = _characteristics.Except(_completedCharacteristics).ToList();
-            print(string.Join(", ", _characteristics.Select(characteristic => characteristic.letter)));
+            _possibleRandomCharacteristics = _allCharacteristics.Except(_completedCharacteristics).ToList();
+            print(string.Join(", ", _possibleRandomCharacteristics.Select(characteristic => characteristic.letter)));
         }
 
-        public void GenerateTask(Vector2Int gridSize)
+        private void GenerateTask(Vector2Int gridSize)
         {
-            print(string.Join(", ", _characteristics.Select(characteristic => characteristic.letter)));
-            var cells = _gridSpawner.CreateGrid(gridSize, _characteristics);
+            if (_possibleRandomCharacteristics.Count == 0)
+            {
+                _endGameLogic.FinishGame();
+                return;
+            }
+            
+            var randCell = GetRandomCell(gridSize);
 
-            var randomCell = GetRandomCell(gridSize, cells);
-        
-            TaskLetter = randomCell.CellLetter;
-            string letterString = randomCell.CellName;
-        
-            string task = "Find " + letterString;
-            _taskText.text = task;
+            if (!_characteristics.Contains(randCell))
+            {
+                _characteristics.Remove(_characteristics[Random.Range(0, _characteristics.Count)]); 
+                _characteristics.Add(randCell);
+            }
+            
+            _gridSpawner.CreateGrid(gridSize, _characteristics);
         
             if (_gridSpawner.IsFirstGrid)
             {
-                FadeText();
+                _elementsAnimator.FadeText(_taskText, this);
                 _gridSpawner.IsFirstGrid = false;
             }
         }
 
-        private Cell GetRandomCell(Vector2Int gridSize, Cell[,] cells)
+        private CellCharacteristic GetRandomCell(Vector2Int gridSize)
         {
-            while (true)
-            {
-                var randomX = Random.Range(0, gridSize.x);
-                var randomY = Random.Range(0, gridSize.y);
+            CellCharacteristic randCell = _possibleRandomCharacteristics[Random.Range(0, _possibleRandomCharacteristics.Count)];
             
-                var randomCell = cells[randomX, randomY];
-                if (randomCell != null)
-                    return randomCell;
-            }
-        }
-
-        private void FadeText()
-        {
-            _taskText.DOFade(0, 0).SetLink(gameObject);
-            _taskText.DOFade(1, 2).SetLink(gameObject);
+            TaskLetter = randCell.letter;
+            
+            _characteristics = _characteristics.OrderBy(_ => Random.value).Take(gridSize.x * gridSize.y).ToList();
+            _taskText.text = "Find " + randCell.letterName;
+            
+            return randCell;
         }
 
         public void CompleteTask()
@@ -90,9 +95,8 @@ namespace Logic
             _completedCharacteristics.Add(_allCharacteristics.Find(characteristic => characteristic.letter == TaskLetter));
         
             _gridSpawner.RemoveGrid();
-        
             ResetCharacteristics();
-
+            
             GenerateTask(_levelConfig.GridSizes[CurrentLevel]);
         }
     

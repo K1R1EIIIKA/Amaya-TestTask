@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Logic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,42 +9,52 @@ namespace CellLogic
 {
     public class GridSpawner : MonoBehaviour
     {
-        [NonSerialized] public bool IsFirstGrid = true;
-    
+        [Header("Properties")]
         [SerializeField] private Cell _cellPrefab;
         [SerializeField] private Vector2 _spacing;
         [SerializeField] private Transform _gridContainer;
-    
+        
+        [Header("Dependencies")]
+        [SerializeField] ElementsAnimator _elementsAnimator;
+        
+        [NonSerialized] public bool IsFirstGrid = true;
+        
         private Cell[,] _cells;
-    
-        public Cell[,] CreateGrid(Vector2Int gridSize, List<CellCharacteristic> _characteristics)
+
+        public Cell[,] CreateGrid(Vector2Int gridSize, List<CellCharacteristic> characteristics)
         {
             _cells = new Cell[gridSize.x, gridSize.y];
-            Vector2 centerPoint = new Vector2(gridSize.x / 2, gridSize.y / 2);
-        
-            if (gridSize.x % 2 == 0)
-                centerPoint.x -= 0.5f;
-            if (gridSize.y % 2 == 0)
-                centerPoint.y -= 0.5f;
-        
+            var centerPoint = GetCenterPoint(gridSize);
+
             for (int x = 0; x < gridSize.x; x++)
             {
                 for (int y = 0; y < gridSize.y; y++)
                 {
-                    if (_characteristics.Count == 0)
+                    if (characteristics.Count == 0)
                         break;
 
-                    SpawnCell(_characteristics, x, y, x - centerPoint.x, y - centerPoint.y);
+                    SpawnCell(characteristics, x, y, x - centerPoint.x, y - centerPoint.y);
                 }
             }
-        
+
             return _cells;
+        }
+
+        private static Vector2 GetCenterPoint(Vector2Int gridSize)
+        {
+            Vector2 centerPoint = new Vector2(gridSize.x / 2, gridSize.y / 2);
+
+            if (gridSize.x % 2 == 0)
+                centerPoint.x -= 0.5f;
+            if (gridSize.y % 2 == 0)
+                centerPoint.y -= 0.5f;
+            return centerPoint;
         }
 
         public void RemoveGrid()
         {
             if (_cells == null) return;
-        
+
             foreach (var cell in _cells)
             {
                 if (cell != null)
@@ -51,30 +62,27 @@ namespace CellLogic
             }
         }
 
-        private void SpawnCell(List<CellCharacteristic> _characteristics, int x, int y, float xPos, float yPos)
+        private void SpawnCell(List<CellCharacteristic> characteristics, int x, int y, float xPos, float yPos)
         {
-            Cell cell = Instantiate(_cellPrefab, new Vector3(xPos + _spacing.x * xPos, yPos + _spacing.y * yPos), Quaternion.identity, _gridContainer);
+            Vector3 cellPosition = new Vector3(xPos + _spacing.x * xPos, yPos + _spacing.y * yPos, 0);
+            Cell cell = Instantiate(_cellPrefab, cellPosition, Quaternion.identity, _gridContainer);
 
-            cell.transform.name = $"Cell {x} {y}";
-        
             if (IsFirstGrid)
-                BounceCell(cell, x, y);
-        
-            var randomCell = _characteristics[Random.Range(0, _characteristics.Count)];
-            cell.SetLetter(randomCell);
-            _characteristics.Remove(randomCell);
-                
-            cell.name = $"Cell {x}, {y}: {randomCell.letter}";
-            _cells[x, y] = cell;
+               _elementsAnimator.BounceAppearingCell(cell, x, y);
+
+            SetCellParams(characteristics, x, y, cell);
         }
 
-        private void BounceCell(Cell cell, float x, float y)
+        private void SetCellParams(List<CellCharacteristic> characteristics, int x, int y, Cell cell)
         {
-            cell.transform.localScale = Vector3.zero;
-            cell.transform.DOScale(Vector3.one, 0.5f)
-                .SetEase(Ease.OutBounce)
-                .SetDelay(x * 0.1f + y * 0.1f)
-                .SetLink(cell.gameObject);
+            cell.transform.name = $"Cell {x} {y}";
+            
+            var randomCell = characteristics[Random.Range(0, characteristics.Count)];
+            cell.SetLetter(randomCell);
+            characteristics.Remove(randomCell);
+
+            cell.name = $"Cell {x}, {y}: {randomCell.letter}";
+            _cells[x, y] = cell;
         }
     }
 }

@@ -1,13 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Logic
 {
     public class WinLogic : MonoBehaviour
     {
+        [Header("Properties")]
+        public float WinTime = 2f;
+        
+        [Header("Dependencies")]
         [SerializeField] private ClickHandler _clickHandler;
         [SerializeField] private LevelTask _levelTask;
-        [SerializeField] private float _winTime = 2f;
         [SerializeField] private EndGameLogic _endGameLogic;
     
         public void Win()
@@ -19,7 +23,7 @@ namespace Logic
         {
             _clickHandler.CanClick = false;
 
-            yield return new WaitForSeconds(_winTime);
+            yield return new WaitForSeconds(WinTime);
 
             _clickHandler.CanClick = true;
         
