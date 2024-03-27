@@ -1,6 +1,8 @@
+using System.Collections;
 using Configs;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Logic
 {
@@ -8,12 +10,13 @@ namespace Logic
     {
         [Header("Properties")]
         [SerializeField] private GameObject _endGamePanel;
-        [SerializeField] private GameObject _finishGamePanel;
+        [SerializeField] private Image _endGameImage;
         
         [Header("Dependencies")]
         [SerializeField] private LevelConfig _levelConfig;
         [SerializeField] private LevelTask _levelTask;
         [SerializeField] private ClickHandler _clickHandler;
+        [SerializeField] private ElementsAnimator _elementsAnimator;
 
         public bool IsEndGame(int currentLevel)
         {
@@ -23,25 +26,16 @@ namespace Logic
         public void EndGame()
         {
             _endGamePanel.SetActive(true);
-            _clickHandler.CanClick = false;
+            _endGameImage.color = new Color(0, 0, 0, 0);
+            _elementsAnimator.FadePanel(_endGameImage, 0.25f, 0.85f);
+            
+            _clickHandler.SetCanClick(false);
         }
     
         public void RestartGame()
         {
-            _endGamePanel.SetActive(false);
-            _levelTask.CurrentLevel = 0;
+            _levelTask.LevelReset();
             _levelTask.ResetTask();
-        }
-        
-        public void FinishGame()
-        {
-            _finishGamePanel.SetActive(true);
-            _clickHandler.CanClick = false;
-        }
-        
-        public void ResetGame()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

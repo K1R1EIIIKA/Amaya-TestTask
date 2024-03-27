@@ -7,7 +7,8 @@ namespace Logic
     public class WinLogic : MonoBehaviour
     {
         [Header("Properties")]
-        public float WinTime = 2f;
+        private float _winTime = 2f;
+        public float WinTime => _winTime;
         
         [Header("Dependencies")]
         [SerializeField] private ClickHandler _clickHandler;
@@ -21,11 +22,11 @@ namespace Logic
 
         private IEnumerator WinCoroutine()
         {
-            _clickHandler.CanClick = false;
+            _clickHandler.SetCanClick(false);
 
-            yield return new WaitForSeconds(WinTime);
+            yield return new WaitForSeconds(_winTime);
 
-            _clickHandler.CanClick = true;
+            _clickHandler.SetCanClick(true);
         
             if (_endGameLogic.IsEndGame(_levelTask.CurrentLevel))
             {
@@ -33,7 +34,7 @@ namespace Logic
             }
             else
             {
-                _levelTask.CurrentLevel++;
+                _levelTask.LevelComplete();
                 _levelTask.CompleteTask();
             }
         }

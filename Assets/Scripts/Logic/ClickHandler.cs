@@ -12,7 +12,7 @@ namespace Logic
         [SerializeField] private WinLogic _winLogic;
         [SerializeField] ElementsAnimator _elementsAnimator;
 
-        [NonSerialized] public bool CanClick = true;
+        [NonSerialized] private bool _canClick = true;
         
         private Camera _mainCamera;
 
@@ -23,8 +23,13 @@ namespace Logic
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0) && CanClick)
+            if (Input.GetMouseButtonDown(0) && _canClick)
                 HandleMouseClick();
+        }
+        
+        public void SetCanClick(bool canClick)
+        {
+            _canClick = canClick;
         }
 
         private void HandleMouseClick()

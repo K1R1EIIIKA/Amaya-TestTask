@@ -8,14 +8,15 @@ namespace Logic
 {
     public class LoadingPanel : MonoBehaviour
     {
-        [Header("Properties")]
+        [Header("Properties")] 
         [SerializeField] private Image _loadingImage;
         [SerializeField] private float _fadeDuration = 1f;
-        
-        [Header("Dependencies")]
+        [SerializeField] private GameObject _endGamePanel;
+
+        [Header("Dependencies")] 
         [SerializeField] private ClickHandler _clickHandler;
         [SerializeField] private ElementsAnimator _elementsAnimator;
-    
+
         public void LoadPanel(UnityEvent task)
         {
             gameObject.SetActive(true);
@@ -24,11 +25,18 @@ namespace Logic
             StartCoroutine(UnloadPanel());
         }
 
+        public void LoadEndPanel()
+        {
+            gameObject.SetActive(true);
+            _elementsAnimator.FadePanel(_loadingImage, _fadeDuration, 1f);
+        }
+
         private IEnumerator UnloadPanel()
         {
             yield return new WaitForSeconds(_fadeDuration);
-        
-            _clickHandler.CanClick = true;
+            _endGamePanel.SetActive(false);
+
+            _clickHandler.SetCanClick(true);
             _loadingImage.DOFade(0, _fadeDuration).OnComplete(() => gameObject.SetActive(false));
         }
     }

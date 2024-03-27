@@ -33,7 +33,7 @@ namespace Logic
         {
             if (cell.IsShaking) return;
 
-            cell.IsShaking = true;
+            cell.SetShaking(true);
 
             cell.LetterObject.transform.DOShakePosition(_shakeDuration, new Vector3(0.3f, 0, 0), 10, 0, false, true)
                 .SetEase(Ease.InBounce)
@@ -52,7 +52,7 @@ namespace Logic
 
         private void FinishShake(Cell cell)
         {
-            cell.IsShaking = false;
+            cell.SetShaking(false);
         }
         
         public void FadeText(TextMeshProUGUI taskText, LevelTask levelTask)
@@ -65,6 +65,12 @@ namespace Logic
         {
             loadingImage.DOFade(0, 0);
             loadingImage.DOFade(1, fadeDuration).OnComplete(task.Invoke);
+        }
+        
+        public void FadePanel(Image loadingImage, float fadeDuration, float intensity)
+        {
+            loadingImage.DOFade(0, 0);
+            loadingImage.DOFade(intensity, fadeDuration);
         }
     }
 }
